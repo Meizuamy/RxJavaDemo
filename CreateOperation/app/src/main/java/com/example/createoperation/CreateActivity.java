@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Supplier;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -25,76 +26,149 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        // 普通的 just
-        Observable.just("hello")
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe");
-                    }
+//        // 普通的 just
+//        Observable.just("hello")
+//                .subscribe(new Observer<String>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.d(TAG, "onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull String s) {
+//                        Log.d(TAG, "onNext : " + s);
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.d(TAG, "onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.d(TAG, "onComplete");
+//                    }
+//                });
+//
+//        // 普通的 create
+//        Observable.create(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
+//                emitter.onNext("Hello");
+//                emitter.onComplete();
+//            }
+//        }).subscribe(new Observer<String>() {
+//            @Override
+//            public void onSubscribe(@NonNull Disposable d) {
+//                Log.d(TAG, "onSubscribe");
+//            }
+//
+//            @Override
+//            public void onNext(@NonNull String s) {
+//                Log.d(TAG, "onNext : " + s);
+//            }
+//
+//            @Override
+//            public void onError(@NonNull Throwable e) {
+//                Log.d(TAG, "onError");
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                Log.d(TAG, "onComplete");
+//            }
+//        });
+//
+//        // 普通的 defer
+//        Observable<Integer> source = Observable
+//                .defer(() -> getSource());
 
-                    @Override
-                    public void onNext(@NonNull String s) {
-                        Log.d(TAG, "onNext : " + s);
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError");
-                    }
 
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete");
-                    }
-                });
+//        source
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(getObserver());
+//
+//        source.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(getObserver());
 
-        // 普通的 create
-        Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
-                emitter.onNext("Hello");
-                emitter.onComplete();
-            }
-        }).subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                Log.d(TAG, "onSubscribe");
-            }
 
-            @Override
-            public void onNext(@NonNull String s) {
-                Log.d(TAG, "onNext : " + s);
-            }
+//        Observable.error(new Throwable("Hello Error!"))
+//                .subscribe(new Observer<Object>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.d(TAG,"onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull Object o) {
+//                        Log.d(TAG,"onNext");
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.d(TAG,"onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.d(TAG,"onComplete");
+//                    }
+//                });
 
-            @Override
-            public void onError(@NonNull Throwable e) {
-                Log.d(TAG, "onError");
-            }
+//        Observable.never()
+//                .subscribe(new Observer<Object>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.d(TAG,"onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull Object o) {
+//                        Log.d(TAG,"onNext");
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.d(TAG,"onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.d(TAG,"onComplete");
+//                    }
+//                });
 
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete");
-            }
-        });
+//        Observable.empty()
+//                .subscribe(new Observer<Object>() {
+//                    @Override
+//                    public void onSubscribe(@NonNull Disposable d) {
+//                        Log.d(TAG,"onSubscribe");
+//                    }
+//
+//                    @Override
+//                    public void onNext(@NonNull Object o) {
+//                        Log.d(TAG,"onNext");
+//                    }
+//
+//                    @Override
+//                    public void onError(@NonNull Throwable e) {
+//                        Log.d(TAG,"onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Log.d(TAG,"onComplete");
+//                    }
+//                });
 
-        // 普通的 defer
-        Observable<Integer> source = Observable
-                .defer(new Supplier<ObservableSource<? extends Integer>>() {
-                    @Override
-                    public ObservableSource<? extends Integer> get() throws Throwable {
-                        return getSource();
-                    }
-                });
+        Integer[] items = { 0,1,2,3,4,5 };
 
-        source
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
+        Observable myObservable = Observable.fromArray(items);
 
-        source.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(getObserver());
+        myObservable.subscribe();
     }
 
     private ObservableSource<? extends Integer> getSource() {
