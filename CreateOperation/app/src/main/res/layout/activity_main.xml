@@ -24,5 +24,17 @@
         android:onClick="transform">
     </Button>
 
+    <Button android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="backpressure"
+        android:onClick="backpressure">
+    </Button>
+
+    <Button android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="scheduler"
+        android:onClick="scheduler">
+    </Button>
+
 
 </LinearLayout>

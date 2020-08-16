@@ -16,6 +16,7 @@ import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Flowable.range(1, 10)
+                .parallel()
+                .runOn(Schedulers.computation())
+                .map(v -> v * v)
+                .sequential()
+                .blockingSubscribe(System.out::println);
     }
 
     public void create(View view) {
@@ -39,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void transform(View view) {
         Intent intent = new Intent(this,TransformActivity.class);
+        startActivity(intent);
+    }
+
+    public void backpressure(View view) {
+        Intent intent = new Intent(this,BackpressureActivity.class);
+        startActivity(intent);
+    }
+
+    public void scheduler(View view) {
+        Intent intent = new Intent(this,SchedulerActivity.class);
         startActivity(intent);
     }
 }
